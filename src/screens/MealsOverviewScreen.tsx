@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';  
 import { MEALS, CATEGORIES } from '../data/meals';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
   MealsOverview: { categoryId: string };
+  MealDetail: { mealId: string }; 
 };
 
 type MealsOverviewScreenRouteProp = RouteProp<RootStackParamList, 'MealsOverview'>;
@@ -31,11 +32,16 @@ const MealsOverviewScreen = () => {
   }, [categoryId, navigation]);
 
   const renderMealItem = ({ item }: { item: Meal }) => (
-    <View style={styles.mealItem}>
-      <Image source={{ uri: item.imageUrl }} style={styles.mealImage} />
-      <Text style={styles.mealName}>{item.name}</Text>
-    </View>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('MealDetail', { mealId: item.id })}
+    >
+      <View style={styles.mealItem}>
+        <Image source={{ uri: item.imageUrl }} style={styles.mealImage} />
+        <Text style={styles.mealName}>{item.name}</Text>
+      </View>
+    </TouchableOpacity>
   );
+  
 
   return (
     <FlatList
